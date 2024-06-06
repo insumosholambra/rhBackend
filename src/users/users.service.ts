@@ -5,6 +5,9 @@ import { User } from './entities/user.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { UserRepository } from './user.repository';
+import * as bcrypt from 'bcrypt';
+
+
 
 @Injectable()
 export class UsersService {
@@ -20,6 +23,11 @@ export class UsersService {
 
 
   async create(user: User): Promise<User> {
+    const generatedPassword = Math.random().toString(36).substring(2, 10);
+    // const hashedPassword = await bcrypt.hash(generatedPassword, 10);
+    user.PASSWORD = generatedPassword;
+
+
     return await this.userRepository.save(user);
   }
 
@@ -36,7 +44,7 @@ export class UsersService {
     const user = this.userRepository.createQueryBuilder(
       `
       SELECT * FROM FUNCIONARIOS WHERE ID = ${id} AND PASSWORD = '${password}'
-      
+
       `
     )  
     return await user

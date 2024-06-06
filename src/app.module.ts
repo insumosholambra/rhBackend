@@ -6,12 +6,14 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import {config} from 'ormconfig'
 import { AuthModule } from './auth/auth.module';
 import { RoleModule } from './role/role.module';
+import { DepartmentsModule } from './departments/departments.module';
+import { PdfModule } from './pdf/pdf.module';
 
 const ENV = process.env.NODE_ENV;
 
 
 @Module({
-  imports: [TypeOrmModule.forRoot(config),UsersModule, AuthModule, RoleModule],
+  imports: [TypeOrmModule.forRoot(config),UsersModule, AuthModule, RoleModule, DepartmentsModule, PdfModule],
   controllers: [AppController],
   providers: [AppService],
 })

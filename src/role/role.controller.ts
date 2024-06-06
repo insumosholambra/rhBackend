@@ -10,9 +10,7 @@ export class RoleController {
   constructor(private readonly roleService: RoleService) {}
 
   @Post()
-  async create(@Body() body): Promise<Role> {
-    console.log('Chegou aqui', body);
-    
+  async create(@Body() body): Promise<Role> {    
     return await this.roleService.create(body);
   }
 
