@@ -12,6 +12,8 @@ import { FileInterceptor } from '@nestjs/platform-express';
 import { Response } from 'express';
 import { PdfService } from './pdf.service';
 import * as fs from 'fs';
+import * as path from 'path';
+
 
 @Controller('pdf')
 export class PdfController {
@@ -50,10 +52,13 @@ export class PdfController {
   @Get()
   async getAllFiles() {
     try {
-      const directoryPath = 'R:/PUBLICO/Intranet - Público'; 
-      const files = await fs.promises.readdir(directoryPath); 
+      const directoryPath = 'R:/PUBLICO/Intranet - Público';
+      const files = await fs.promises.readdir(directoryPath);
+
+      // Filtra apenas os arquivos que possuem a extensão .pdf
+      const pdfFiles = files.filter(file => path.extname(file).toLowerCase() === '.pdf');
       
-      return files;
+      return pdfFiles;
     } catch (error) {
       console.error('Erro ao buscar os arquivos:', error);
       throw new Error('Erro ao buscar os arquivos.');

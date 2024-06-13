@@ -11,12 +11,16 @@ export class AuthService {
 
   async signIn(ID: number, PASSWORD: string) {
     const user = await this.usersService.findOne(ID);
+    if(user){
+      Error('Erro, usuário não encontrado!')
+    }
 
-
-    const payload = { id: user.ID, username: user.NOME, subname: user.SOBRENOME, cargo: user.CARGO };
-    return {
-      id: user.ID, username: user.NOME, subname: user.SOBRENOME, cargo: user.CARGO,
-      access_token: await this.jwtService.signAsync(payload),
-    };
+    if(user.PASSWORD === PASSWORD){
+      const payload = { id: user.ID, username: user.NOME, subname: user.SOBRENOME, cargo: user.CARGO, departamento: user.DEPARTAMENTO };
+      return {
+        id: user.ID, username: user.NOME, subname: user.SOBRENOME, cargo: user.CARGO, departamento: user.DEPARTAMENTO,
+        access_token: await this.jwtService.signAsync(payload),
+      };
+    }
   }
 }

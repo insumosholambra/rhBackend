@@ -54,4 +54,13 @@ export class User {
     @Column()
     CARGO: string
 
+    @Column({ type: 'date' })
+    DATA_CADASTRO: string
+
+    @Column({ type: 'date' })
+    ULTIMO_PERIODO_FERIAS: string
+
+    @Column()
+    SALDO_FERIAS: number
+
 }

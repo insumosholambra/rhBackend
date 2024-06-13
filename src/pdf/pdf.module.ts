@@ -4,28 +4,31 @@ import { join } from 'path';
 import { diskStorage } from 'multer';
 import { PdfController } from './pdf.controller';
 import { PdfService } from './pdf.service';
-import { v4 as uuidv4 } from 'uuid'; // Importar UUID
 
 @Module({
   imports: [
     MulterModule.register({
       storage: diskStorage({
         destination: 'R:/PUBLICO/Intranet - Público',
-        //garante que não haverá arquivos com o mesmo nome na pasta, dessa forma evitando sobrescrição
         filename: (req, file, cb) => {
           const today = new Date();
           const formattedDate = today
             .toISOString()
             .slice(0, 10)
             .replace(/-/g, ''); // Formato: AAAA-MM-DD
-          const uniqueSuffix = Date.now();
-          const fileName = `${formattedDate}-${file.originalname}`; // Nome único com a data de hoje
+          const fileName = `${formattedDate}-${file.originalname}`; // salva o arquivo com a data de hoje + nome
           cb(null, fileName);
         },
       }),
       limits: {
-        //limite de arquivo definido em 5mb
-        fileSize: 5 * 1024 * 1024,
+        fileSize: 5 * 1024 * 1024, // limite de arquivo definido em 5mb
+      },
+      fileFilter: (req, file, cb) => {
+        if (file.mimetype === 'application/pdf') {
+          cb(null, true); // aceita o arquivo
+        } else {
+          cb(new Error('Somente arquivos PDF são permitidos!'), false); // rejeita o arquivo
+        }
       },
     }),
   ],
