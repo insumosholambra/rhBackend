@@ -18,13 +18,18 @@ export class VacationRequestsController {
   }
 
   @Get(':id')
-  findOne(@Param('id') id: string) {
+  findOne(@Param('id') id: number) {
     return this.vacationRequestsService.findOne(+id);
   }
 
   @Patch(':id')
   update(@Param('id') id: string, @Body() updateVacationRequestDto: UpdateVacationRequestDto) {
     return this.vacationRequestsService.update(+id, updateVacationRequestDto);
+  }
+
+  @Patch(':id/status')
+  updateStatus(@Param('id') id: number, @Body() updateStatusDto: UpdateVacationRequestDto) {
+    return this.vacationRequestsService.updateStatus(+id, updateStatusDto);
   }
 
   @Delete(':id')
