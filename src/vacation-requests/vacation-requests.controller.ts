@@ -27,10 +27,10 @@ export class VacationRequestsController {
     return this.vacationRequestsService.update(+id, updateVacationRequestDto);
   }
 
-  @Patch(':id/status')
-  updateStatus(@Param('id') id: number, @Body() updateStatusDto: UpdateVacationRequestDto) {
-    return this.vacationRequestsService.updateStatus(+id, updateStatusDto);
-  }
+  // @Patch(':id/status')
+  // updateStatus(@Param('id') id: number, @Body() updateStatusDto: UpdateVacationRequestDto) {
+  //   return this.vacationRequestsService.updateStatus(+id, updateStatusDto);
+  // }
 
   @Delete(':id')
   remove(@Param('id') id: string) {

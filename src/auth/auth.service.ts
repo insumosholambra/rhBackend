@@ -17,10 +17,13 @@ export class AuthService {
 
     if(user.PASSWORD === PASSWORD){
       const payload = { id: user.ID, username: user.NOME, subname: user.SOBRENOME, cargo: user.CARGO, departamento: user.DEPARTAMENTO };
+      console.log(payload);
+      
       return {
         id: user.ID, username: user.NOME, subname: user.SOBRENOME, cargo: user.CARGO, departamento: user.DEPARTAMENTO,
         access_token: await this.jwtService.signAsync(payload),
       };
+      
     }
   }
 }

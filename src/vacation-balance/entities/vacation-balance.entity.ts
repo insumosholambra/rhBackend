@@ -15,4 +15,5 @@ export class VacationBalance {
 
     @Column()
     DIAS_RESTANTES: number
+  STATUS_SOLICITACAO: any;
 }

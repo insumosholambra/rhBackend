@@ -7,7 +7,7 @@ export const config: DataSourceOptions = {
     port: 1433,
     username: 'sa',
     password: 'abc71db',
-    database: 'INTRANET',
+    database: 'INTRANET_TESTE',
     entities: [__dirname + '/../**/*.entity.js'],
     synchronize: false,
     extra: {

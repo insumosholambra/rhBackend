@@ -22,7 +22,7 @@ export class VacationBalanceController {
     return this.vacationBalanceService.findOne(+id);
   }
 
-  @Patch(':id')
+  @Patch('/:id')
   update(@Param('id') id: string, @Body() updateVacationBalanceDto: UpdateVacationBalanceDto) {
     return this.vacationBalanceService.update(+id, updateVacationBalanceDto);
   }

@@ -8,48 +8,52 @@ import { DuplicateRequestException } from 'src/exceptions/duplicate-request.exce
 
 @Injectable()
 export class VacationRequestsService {
-
-
   constructor(
     @InjectRepository(VacationRequest)
-    private vacationRequestRepository: VacationRequestRepository
-  ){}
-
+    private vacationRequestRepository: VacationRequestRepository,
+  ) {}
 
   async create(body) {
-    const existingRequest = await this.vacationRequestRepository.findOne({ where: { ID_FUNCIONARIO: body.ID_FUNCIONARIO } });
-  
+    const existingRequest = await this.vacationRequestRepository.findOne({
+      where: { ID_FUNCIONARIO: body.ID_FUNCIONARIO },
+    });
+
     if (existingRequest) {
       throw new DuplicateRequestException();
     }
     return this.vacationRequestRepository.save(body);
   }
 
+  // async updateStatus(id: number, updateStatusDto: UpdateVacationRequestDto) {
+  //   const queryBuilder =
+  //     this.vacationRequestRepository.createQueryBuilder('vacationRequest');
+  //   const existingRequest = await queryBuilder
+  //     .where('vacationRequest.ID_SOLICITACAO = :id', { id })
+  //     .getOne();
 
-  async updateStatus(id: number, updateStatusDto: UpdateVacationRequestDto) {
-    const queryBuilder = this.vacationRequestRepository.createQueryBuilder('vacationRequest');
-    const existingRequest = await queryBuilder
-      .where('vacationRequest.ID_SOLICITACAO = :id', { id })
-      .getOne();
+  //   if (!existingRequest) {
+  //     throw new NotFoundException(
+  //       `Solicitação de férias com ID ${id} não encontrada.`,
+  //     );
+  //   }
 
-    if (!existingRequest) {
-      throw new NotFoundException(`Solicitação de férias com ID ${id} não encontrada.`);
-    }
+  //   existingRequest.STATUS_SOLICITACAO = updateStatusDto.STATUS_SOLICITACAO;
 
-    existingRequest.STATUS_SOLICITACAO = updateStatusDto.STATUS_SOLICITACAO;
+  //   return this.vacationRequestRepository.save(existingRequest);
+  // }
 
-    return this.vacationRequestRepository.save(existingRequest);
+  findAll() {
+    return this.vacationRequestRepository
+      .createQueryBuilder('SOLICITACOES_FERIAS')
+      .getMany();
   }
   
 
-  findAll() {
-    return this.vacationRequestRepository.find();
-  }
-
-
-
-  findOne(id: number) {
-    return `This action returns a #${id} vacationRequest`;
+  async findOne(id: number) {
+    return this.vacationRequestRepository
+      .createQueryBuilder('SOLICITACOES_FERIAS')
+      .where('SOLICITACOES_FERIAS.ID_FUNCIONARIO = :id', { id })
+      .getOne();
   }
 
   update(id: number, updateVacationRequestDto: UpdateVacationRequestDto) {

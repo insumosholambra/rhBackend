@@ -1,6 +1,8 @@
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import * as dotenv from 'dotenv';
+import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
+import  helmet  from 'helmet'
 
 
 async function bootstrap() {
@@ -11,6 +13,21 @@ async function bootstrap() {
     methods: 'GET,HEAD,PUT,PATCH,POST,DELETE,OPTIONS',
     allowedHeaders: 'Content-Type, Accept',
   });
-  await app.listen(3000, '192.168.1.198'); // Escutando no IP específico
+
+  await app.listen(3000, '192.168.1.198'); 
+  
+  app.use(helmet());
+
+  const config = new DocumentBuilder()
+    .setTitle('Título da API')
+    .setDescription('Descrição da API')
+    .setVersion('1.0')
+    .addTag('tag')
+    .build();
+
+  const document = SwaggerModule.createDocument(app, config);
+  SwaggerModule.setup('api', app, document);
+
+  
 }
 bootstrap();

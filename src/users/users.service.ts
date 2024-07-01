@@ -1,77 +1,78 @@
-import { Injectable } from '@nestjs/common';
-import { CreateUserDto } from './dto/create-user.dto';
-import { UpdateUserDto } from './dto/update-user.dto';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { User } from './entities/user.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { UserRepository } from './user.repository';
-import * as bcrypt from 'bcrypt';
-import { format } from 'date-fns';
-import { catchError } from 'rxjs';
-
-
+import { VacationRequestRepository } from 'src/vacation-requests/vacation-requests.repository';
+import { UpdateUserDto } from './dto/update-user.dto';
+import { VacationRequest } from 'src/vacation-requests/entities/vacation-request.entity';
 
 @Injectable()
 export class UsersService {
-  findOneById(ID: number) {
-      throw new Error('Method not implemented.');
-  }
-
-
   constructor(
     @InjectRepository(User)
     private readonly userRepository: UserRepository,
-  ){}
-
-
-  // async create(user: User): Promise<User> {
-  //   const generatedPassword = Math.random().toString(36).substring(2, 10);
-  //   // const hashedPassword = await bcrypt.hash(generatedPassword, 10);
-  //   user.PASSWORD = '123456';
-  //   user.DATA_NASCTO = format(new Date(user.DATA_NASCTO), 'yyyy-MM-dd');
-  //   user.DATA_CADASTRO = format(new Date(user.DATA_CADASTRO), 'yyyy-MM-dd');
-
-  //   return await this.userRepository.save(user);
-  // }
+    @InjectRepository(VacationRequest)
+    private readonly vacationRepository: VacationRequestRepository,
+  ) {}
 
   async create(user: User): Promise<User> {
-
-    const password = user.CPF
+    const password = user.CPF;
     const passOnlyNumbers = password.replace(/[^\d]/g, '');
-    user.PASSWORD = passOnlyNumbers
-
+    user.PASSWORD = passOnlyNumbers;
 
     return await this.userRepository.save(user);
   }
 
   async findAll(): Promise<User[]> {
-    return await this.userRepository.find();
+    return await this.userRepository.find({ relations: ['DEPARTAMENTO', 'CARGO'] });
   }
 
-  async findOne(id: any) {
-    const user = this.userRepository.findOneById(id);   
-    return await user
+  
+  async findOne(ID: number): Promise<User> {
+    const user = await this.userRepository.findOne({ where: { ID }, relations: ['DEPARTAMENTO', 'CARGO'] });
+    if (!user) {
+      throw new NotFoundException('User not found');
+    }
+    return user;
   }
 
   async findUser(ID: number): Promise<User> {
-    try{
-      
-      const user = this.userRepository.findOne({ where: { ID } });
-      if(user){
-        return user
-      } else {
-        Error('Erro, usuário não encontrado')
-      }
-    } catch {
-      Error('Erro, usuário não encontrado')
+    const user = await this.userRepository.findOne({ where: { ID } });
+    if (!user) {
+      throw new NotFoundException('User not found');
     }
+    return user;
   }
 
-  update(id: number, updateUserDto: UpdateUserDto) {
-    return `This action updates a #${id} user`;
+  async update(ID: number, updateUserDto: UpdateUserDto): Promise<User> {
+    const user = await this.userRepository.findOne({ where: { ID }, relations: ['DEPARTAMENTO', 'CARGO'] });
+    if (!user) {
+      throw new NotFoundException('User not found');
+    }
+    Object.assign(user, updateUserDto);
+    return this.userRepository.save(user);
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} user`;
+  async remove(ID: number) {
+    const user = await this.findUser(ID);
+    if (!user) {
+      throw new NotFoundException('User not found');
+    }
+
+    const holidayRequests = await this.findHolidayRequests(ID);
+
+    if (holidayRequests.length > 0) {
+      await this.vacationRepository.remove(holidayRequests);
+    }
+
+    await this.userRepository.remove(user);
+  }
+
+  async findHolidayRequests(ID: number) {
+    const result = await this.vacationRepository.find({
+      where: { ID_FUNCIONARIO: ID },
+    });
+    return result;
   }
 }
