@@ -10,12 +10,13 @@ import { DepartmentsModule } from './departments/departments.module';
 import { PdfModule } from './pdf/pdf.module';
 import { VacationBalanceModule } from './vacation-balance/vacation-balance.module';
 import { VacationRequestsModule } from './vacation-requests/vacation-requests.module';
+import { VisitModule } from './visit/visit.module';
 
 const ENV = process.env.NODE_ENV;
 
 
 @Module({
-  imports: [TypeOrmModule.forRoot(config),UsersModule, AuthModule, RoleModule, DepartmentsModule, PdfModule, VacationBalanceModule, VacationRequestsModule],
+  imports: [TypeOrmModule.forRoot(config),UsersModule, AuthModule, RoleModule, DepartmentsModule, PdfModule, VacationBalanceModule, VacationRequestsModule, VisitModule],
   controllers: [AppController],
   providers: [AppService],
 })

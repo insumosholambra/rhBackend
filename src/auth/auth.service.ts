@@ -11,6 +11,8 @@ export class AuthService {
 
   async signIn(ID: number, PASSWORD: string) {
     const user = await this.usersService.findOne(ID);
+    console.log(user);
+    
     if(user){
       Error('Erro, usuário não encontrado!')
     }

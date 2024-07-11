@@ -14,7 +14,7 @@ async function bootstrap() {
     allowedHeaders: 'Content-Type, Accept',
   });
 
-  await app.listen(3000, '192.168.1.198'); 
+  await app.listen(3000, '192.168.1.75'); 
   
   app.use(helmet());
 
