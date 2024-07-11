@@ -1,3 +1,5 @@
+import { ConfigService } from '@nestjs/config';
+
 export const jwtConstants = {
-    secret: 'INS-UMOS',
-  };
+  secret: process.env.JWT_SECRET,
+};
