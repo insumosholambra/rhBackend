@@ -17,6 +17,8 @@ export class DepartmentsService {
 
 
   async create(department: any): Promise<any> {
+    console.log(department);
+    
     return await this.departmentsRepository.save(department);
   }
 

@@ -6,7 +6,7 @@ export class Department {
   @PrimaryGeneratedColumn()
   ID: number;
 
-  @Column({ type: 'nvarchar', length: 255 })
+  @Column()
   DESCRICAO: string;
 
   @OneToMany(() => User, user => user.DEPARTAMENTO)
