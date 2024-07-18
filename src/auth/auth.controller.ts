@@ -14,7 +14,7 @@ export class AuthController {
   @HttpCode(HttpStatus.OK)
   @Post('validate')
   async validate(@Body() body: { token: string }) {
-    const isValid = await this.authService.validateToken(body.token); // Extracting the token
-    return { valid: isValid }; // Return a response indicating validity
+    const isValid = await this.authService.validateToken(body.token); 
+    return { valid: isValid };
   }
 }

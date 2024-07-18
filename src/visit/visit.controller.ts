@@ -17,7 +17,7 @@ export class VisitController {
     return this.visitService.findAll();
   }
 
-  @Get(':id')
+  @Get('/:id')
   findOne(@Param('id') id: string) {
     return this.visitService.findOne(+id);
   }

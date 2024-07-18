@@ -9,6 +9,7 @@ import { VacationRequest } from 'src/vacation-requests/entities/vacation-request
 
 @Injectable()
 export class UsersService {
+
   constructor(
     @InjectRepository(User)
     private readonly userRepository: UserRepository,
@@ -27,6 +28,17 @@ export class UsersService {
   async findAll(): Promise<User[]> {
     return await this.userRepository.find({ relations: ['DEPARTAMENTO', 'CARGO'] });
   }
+
+  async findAllNames(): Promise<{ id: number; nome: string; departamento: string }[]> {
+    const users = await this.userRepository.find({ relations: ['DEPARTAMENTO'] });
+    return users.map(user => ({
+      id: user.ID,
+      nome: user.NOME + ' ' + user.SOBRENOME,
+      departamento: user.DEPARTAMENTO.DESCRICAO 
+    }));
+  }
+  
+  
 
   
   async findOne(ID: number): Promise<User> {

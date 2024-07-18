@@ -8,15 +8,14 @@ import  helmet  from 'helmet'
 async function bootstrap() {
   dotenv.config();
   const app = await NestFactory.create(AppModule, { cors: false });
+
+  app.use(helmet()); // Colocado aqui para garantir segurança antes de escutar
+
   app.enableCors({
-    origin: '*', 
+    origin: '*',
     methods: 'GET,HEAD,PUT,PATCH,POST,DELETE,OPTIONS',
     allowedHeaders: 'Content-Type, Accept',
   });
-
-  await app.listen(3000, '192.168.1.75'); 
-  
-  app.use(helmet());
 
   const config = new DocumentBuilder()
     .setTitle('Título da API')
@@ -28,6 +27,8 @@ async function bootstrap() {
   const document = SwaggerModule.createDocument(app, config);
   SwaggerModule.setup('api', app, document);
 
-  
+  await app.listen(3000, '192.168.1.75'); 
 }
+
 bootstrap();
+

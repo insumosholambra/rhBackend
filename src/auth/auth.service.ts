@@ -29,7 +29,7 @@ export class AuthService {
     };
 
     const access_token = await this.jwtService.signAsync(payload, {
-      expiresIn: '60s', // Token expiration time
+      expiresIn: '3600s'
     });
 
     return {

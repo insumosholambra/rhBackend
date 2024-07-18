@@ -69,8 +69,8 @@ export class VisitService {
     return this.visitRepository.find()
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} visit`;
+  findOne(id: number){
+    return this.visitRepository.findOneBy({ID: id})   
   }
 
   update(id: number, updateVisitDto: UpdateVisitDto) {
