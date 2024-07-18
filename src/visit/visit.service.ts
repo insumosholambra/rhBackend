@@ -65,8 +65,26 @@ export class VisitService {
     return time.length === 5 ? time + ':00' : time;
   }
 
-  findAll() {
-    return this.visitRepository.find()
+  async findAll() {
+    try {
+      const visits = await this.visitRepository.query(
+        `
+        SELECT * FROM VISITAS v 
+        `
+      );
+
+      return visits
+      // return {
+      //   success: true,
+      //   data: visits,
+      // };
+    } catch (error) {
+      return {
+        success: false,
+        message: 'Error retrieving visits',
+        error: error.message,
+      };
+    }
   }
 
   findOne(id: number){
