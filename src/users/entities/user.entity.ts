@@ -65,4 +65,7 @@ export class User {
 
   @Column()
   SALDO_FERIAS: number;
+
+  @Column()
+  MATRICULA: number;
 }

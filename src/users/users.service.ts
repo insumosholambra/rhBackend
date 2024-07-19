@@ -18,12 +18,12 @@ export class UsersService {
   ) {}
 
   async create(user: User): Promise<User> {
-    const password = user.CPF;
-    const passOnlyNumbers = password.replace(/[^\d]/g, '');
-    user.PASSWORD = passOnlyNumbers;
-
+    const password = user.MATRICULA.toString();
+    user.PASSWORD = password;
+  
     return await this.userRepository.save(user);
   }
+  
 
   async findAll(): Promise<User[]> {
     return await this.userRepository.find({ relations: ['DEPARTAMENTO', 'CARGO'] });

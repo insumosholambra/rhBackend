@@ -74,10 +74,6 @@ export class VisitService {
       );
 
       return visits
-      // return {
-      //   success: true,
-      //   data: visits,
-      // };
     } catch (error) {
       return {
         success: false,
