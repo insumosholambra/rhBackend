@@ -7,35 +7,32 @@ import { Visit } from './entities/visit.entity';
 
 @Injectable()
 export class VisitService {
-
   constructor(
     @InjectRepository(VisitRepository)
     private visitRepository: VisitRepository,
   ) {}
 
   create(body) {
-    if(body){
-      return this.visitRepository.save(body)
+    if (body) {
+      return this.visitRepository.save(body);
     } else {
-      return 'No data'
+      return 'No data';
     }
   }
 
   async newVisit(visitData: any): Promise<Visit> {
-
     if (!visitData.DATA_VISITA) {
-      visitData.DATA_VISITA = new Date().toISOString().split('T')[0];  // Data atual no formato yyyy-MM-dd
+      visitData.DATA_VISITA = new Date().toISOString().split('T')[0]; // Data atual no formato yyyy-MM-dd
     }
     if (!visitData.NEW_DATE) {
-      visitData.NEW_DATE = new Date().toISOString().split('T')[0];  // Data atual no formato yyyy-MM-dd
+      visitData.NEW_DATE = new Date().toISOString().split('T')[0]; // Data atual no formato yyyy-MM-dd
     }
 
     if (!visitData.DATA_FORM) {
-      visitData.DATA_FORM = new Date().toISOString().split('T')[0];  // Data atual no formato yyyy-MM-dd
+      visitData.DATA_FORM = new Date().toISOString().split('T')[0]; // Data atual no formato yyyy-MM-dd
     }
 
     console.log(visitData);
-    
 
     const newVisit = await this.visitRepository.query(
       `
@@ -55,10 +52,10 @@ export class VisitService {
 
         SELECT * FROM @OutputTable;
 
-      `
-    )
+      `,
+    );
 
-    return newVisit
+    return newVisit;
   }
 
   private formatTime(time: string): string {
@@ -70,10 +67,10 @@ export class VisitService {
       const visits = await this.visitRepository.query(
         `
         SELECT * FROM VISITAS v 
-        `
+        `,
       );
 
-      return visits
+      return visits;
     } catch (error) {
       return {
         success: false,
@@ -83,6 +80,18 @@ export class VisitService {
     }
   }
 
+  async findById(id: number) {
+    const visits = await this.visitRepository.query(
+      `
+        SELECT * FROM VISITAS WHERE ID = ${id}
+      `,
+    );
+    if (!visits) {
+      throw new NotFoundException('Visit not found');
+    }
+    return visits;
+  }
+
   async findOne(id: number) {
     const user = await this.visitRepository.findOneBy({ ID: id });
     if (!user) {
@@ -90,13 +99,12 @@ export class VisitService {
     }
     return user;
   }
-  
 
   update(id: number, updateVisitDto: UpdateVisitDto) {
     return `This action updates a #${id} visit`;
   }
 
   remove(id: number) {
-    return this.visitRepository.delete(id)
+    return this.visitRepository.delete(id);
   }
 }

@@ -22,6 +22,11 @@ export class VisitController {
     return this.visitService.findOne(+id);
   }
 
+  @Get('all-visits/:id')
+  findById(@Param('id') id: string) {
+    return this.visitService.findById(+id);
+  }
+
   @Patch(':id')
   update(@Param('id') id: string, @Body() updateVisitDto: UpdateVisitDto) {
     return this.visitService.update(+id, updateVisitDto);
