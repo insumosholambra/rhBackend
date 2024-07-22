@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { CreateVisitDto } from './dto/create-visit.dto';
 import { UpdateVisitDto } from './dto/update-visit.dto';
 import { InjectRepository } from '@nestjs/typeorm';
@@ -83,9 +83,14 @@ export class VisitService {
     }
   }
 
-  findOne(id: number){
-    return this.visitRepository.findOneBy({ID: id})   
+  async findOne(id: number) {
+    const user = await this.visitRepository.findOneBy({ ID: id });
+    if (!user) {
+      throw new NotFoundException('Visit not found');
+    }
+    return user;
   }
+  
 
   update(id: number, updateVisitDto: UpdateVisitDto) {
     return `This action updates a #${id} visit`;
