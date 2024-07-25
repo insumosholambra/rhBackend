@@ -9,7 +9,7 @@ async function bootstrap() {
   dotenv.config();
   const app = await NestFactory.create(AppModule, { cors: false });
 
-  app.use(helmet()); // Colocado aqui para garantir segurança antes de escutar
+  app.use(helmet()); 
 
   app.enableCors({
     origin: '*',
@@ -27,7 +27,7 @@ async function bootstrap() {
   const document = SwaggerModule.createDocument(app, config);
   SwaggerModule.setup('api', app, document);
 
-  await app.listen(3000, '192.168.1.10'); 
+  await app.listen(3000, '192.168.1.75'); 
 }
 
 bootstrap();

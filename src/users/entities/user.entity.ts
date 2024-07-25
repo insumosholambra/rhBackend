@@ -68,4 +68,8 @@ export class User {
 
   @Column()
   MATRICULA: number;
+
+  @Column({ type: 'varbinary', length: 'max' })
+  FOTO: Buffer;
+
 }

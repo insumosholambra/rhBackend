@@ -4,13 +4,12 @@ import * as path from 'path';
 
 @Injectable()
 export class PdfService {
-  private readonly uploadPath = 'R:/PUBLICO/Intranet - Público';
+  private readonly uploadPath = 'R:/USUARIOS/Intranet/Formularios';
 
   async saveFile(file: Express.Multer.File): Promise<void> {
     const filePath = path.join(this.uploadPath, file.originalname);
 
     try {
-      // Salva o arquivo no disco
       fs.writeFileSync(filePath, file.buffer);
       console.log('Arquivo salvo com sucesso:', filePath);
     } catch (error) {

@@ -64,4 +64,7 @@ export class Visit {
 
   @Column({ type: 'date' })
   DATA_FORM: string;
+
+  @Column()
+  TIPO_CLI: string;
 }

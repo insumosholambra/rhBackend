@@ -37,8 +37,9 @@ export class PdfController {
   @Get(':filename')
   getFile(@Param('filename') filename: string, @Res() res: Response) {
     try {
-      const filePath = `R:/PUBLICO/Intranet - Público/${filename}`;
+      const filePath = `R:/USUARIOS/Intranet/Formularios/${filename}`;
       if (fs.existsSync(filePath)) {
+        res.setHeader('Content-Disposition', `attachment; filename=${filename}`);
         res.sendFile(filePath);
       } else {
         res.status(404).send('Arquivo não encontrado');
@@ -52,13 +53,13 @@ export class PdfController {
   @Get()
   async getAllFiles() {
     try {
-      const directoryPath = 'R:/PUBLICO/Intranet - Público';
+      const directoryPath = 'R:/USUARIOS/Intranet/Formularios';
       const files = await fs.promises.readdir(directoryPath);
-
-      // Filtra apenas os arquivos que possuem a extensão .pdf
-      const pdfFiles = files.filter(file => path.extname(file).toLowerCase() === '.pdf');
-      
-      return pdfFiles;
+  
+      const excelExtensions = ['.xlsx', '.xls', '.pdf'];
+      const filteredFiles = files.filter(file => excelExtensions.includes(path.extname(file).toLowerCase()));
+  
+      return filteredFiles;
     } catch (error) {
       console.error('Erro ao buscar os arquivos:', error);
       throw new Error('Erro ao buscar os arquivos.');

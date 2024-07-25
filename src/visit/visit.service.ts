@@ -24,8 +24,10 @@ export class VisitService {
     if (!visitData.DATA_VISITA) {
       visitData.DATA_VISITA = new Date().toISOString().split('T')[0]; // Data atual no formato yyyy-MM-dd
     }
+
+
     if (!visitData.NEW_DATE) {
-      visitData.NEW_DATE = new Date().toISOString().split('T')[0]; // Data atual no formato yyyy-MM-dd
+      visitData.NEW_DATE = '1970-01-01' // Data atual no formato yyyy-MM-dd
     }
 
     if (!visitData.DATA_FORM) {
@@ -43,11 +45,11 @@ export class VisitService {
       INSERT INTO VISITAS (
         NOME, SOBRENOME, DATA_VISITA, CLIENTE, PROPRIEDADE, CIDADE, CULTURA, OBJETIVO, 
         CHEGADA, SAIDA, CONTATO, MOTIVO, ASSUNTO, CONDICOES_PROP, PROBLEMAS, 
-        MELHORIAS, VISITA_FUTU, NEW_DATE, ID, DATA_FORM
+        MELHORIAS, VISITA_FUTU, NEW_DATE, ID, DATA_FORM, TIPO_CLI
       ) OUTPUT INSERTED.ID INTO @OutputTable VALUES (
         '${visitData.NOME}', '${visitData.SOBRENOME}', '${visitData.DATA_VISITA}', '${visitData.CLIENTE}', '${visitData.PROPRIEDADE}', '${visitData.CIDADE}', '${visitData.CULTURA}', 
         '${visitData.OBJETIVO}', '${visitData.CHEGADA}', '${visitData.SAIDA}', '${visitData.CONTATO}', '${visitData.MOTIVO}', '${visitData.ASSUNTO}', '${visitData.CONDICOES_PROP}', 
-        '${visitData.PROBLEMAS}', '${visitData.MELHORIAS}', '${visitData.VISITA_FUTU}', '${visitData.NEW_DATE}', '${visitData.ID}', '${visitData.DATA_FORM}'
+        '${visitData.PROBLEMAS}', '${visitData.MELHORIAS}', '${visitData.VISITA_FUTU}', '${visitData.NEW_DATE}', '${visitData.ID}', '${visitData.DATA_FORM}', '${visitData.TIPO_CLI}'
       );   
 
         SELECT * FROM @OutputTable;
